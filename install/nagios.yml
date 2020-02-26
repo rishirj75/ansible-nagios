@@ -11,11 +11,13 @@
 
 - hosts: all:!switches:!oobservers:!idrac:!supermicro_6048r:!supermicro_6018r:!supermicro_1028r:!devices
   remote_user: "{{ ansible_system_user }}"
+  become: true
   tasks: []
 
 # role for nagios clients via NRPE
 - hosts: all:!switches:!oobservers:!nagios:!idrac:!supermicro_6048r:!supermicro_6018r:!supermicro_1028r:!freenas:!devices
   remote_user: "{{ ansible_system_user }}"
+  become: true
   roles:
     - { role: nagios_client }
     - { role: firewall_client, when: manage_firewall_client|bool }
@@ -23,6 +25,7 @@
 # role for nagios server
 - hosts: nagios
   remote_user: "{{ ansible_system_user }}"
+  become: true
   roles:
     - { role: nagios }
     - { role: firewall, when: manage_firewall|bool }
